@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+          content="A Plug-and-Play Image Registration Network">
+    <meta name="author" content="Junhao Hu, Weijie Gan,
+    Flora Sun,
+    Hongyu An,
+    Ulugbek S. Kamilov">
+
+    <title>A Plug-and-Play Image Registration Network</title>
+    <!-- Bootstrap core CSS -->
+    <!--link href="bootstrap.min.css" rel="stylesheet"-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="offcanvas.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="src/css/style.css">
+
+</head>
+
+<body>
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container"></div>
+    <h2>A Plug-and-Play Image Registration Network</h2>
+    <p class="abstract">The <b>FIRST</b> Plug-and-Play Method for Deformable Image Registration</p>
+    <hr>
+    <p class="authors">
+	<a href="https://charles-hu.github.io/"> Junhao Hu</a>*<sup>1</sup>,
+        <a href="https://wjgancn.github.io"> Weijie Gan</a>*<sup>2</sup>,
+        <a href="https://flora-sun-zhixin.github.io/"> Zhixin Sun</a><sup>1,3</sup>,
+        <a href="https://profiles.wustl.edu/en/persons/hongyu-an"> Hongyu An</a><sup>1,4,5,6</sup>, and
+        <a href="https://engineering.wustl.edu/faculty/Ulugbek-Kamilov.html"> Ulugbek S. Kamilov</a><sup>1,2</sup> </br>
+    </p>
+    <p>
+        <a><sup>1</sup>Department of Electrical & System Engineering, Washington University in St. Louis, St. Louis, MO, USA</a></br>
+        <a><sup>2</sup>Department of Computer Science & Engineering, Washington University in St. Louis, St. Louis, MO, USA</a></br>
+        <a><sup>3</sup>Program of Imaging Science, Washington University in St. Louis, St. Louis, MO, USA</a></br>
+        <a><sup>4</sup>Mallinckrodt Institute of Radiology, Washington University in St. Louis, St. Louis, MO, USA</a></br>
+        <a><sup>5</sup>Department of Biomedical Engineering, Washington University in St. Louis, St. Louis, MO, USA</a></br>
+        <a><sup>6</sup>Department of Neurology, Washington University in St. Louis, St. Louis, MO, USA</a></br>
+    <p> <b>Junhao Hu</b> and <b>Weijie Gan</b> contributed equally to this project.</p>
+
+    <div class="btn-group" role="group" aria-label="Top menu">
+        <!--<a class="btn btn-primary" href="https://ieeexplore.ieee.org/document/9743932">Paper</a>-->
+        <a class="btn btn-primary" href="https://arxiv.org/abs/2310.04297">Preprint</a>
+        <!--<a class="btn btn-primary" href="https://github.com/lanl/scico-data/blob/main/notebooks/superres_ppp_dncnn_admm.ipynb">Code</a>-->
+    </div>
+</div>
+
+<div class="container">
+    <div class="section">
+
+        <br>
+        <h2>Abstract</h2>
+        <hr>
+        <p>
+            Deformable image registration (DIR) is an active research topic in biomedical imaging. There is a growing interest in developing DIR methods based on deep learning (DL). A traditional DL approach to DIR is based on training a convolutional neural network (CNN) to estimate the registration field between two input images. While conceptually simple, this approach comes with a limitation that it exclusively relies on a pre-trained CNN without explicitly enforcing fidelity between the registered image and the reference. We present plug-and-play image registration network (PIRATE) as a new DIR method that addresses this issue by integrating an explicit data-fidelity penalty and a CNN prior. PIRATE pre-trains a CNN denoiser on the registration field and "plugs" it into an iterative method as a regularizer. We additionally present PIRATE+ that fine-tunes the CNN prior in PIRATE using deep equilibrium models (DEQ). PIRATE+ interprets the fixed-point iteration of PIRATE as a network with effectively infinite layers and then trains the resulting network end-to-end, enabling it to learn more task-specific information and boosting its performance. Our numerical results on OASIS and CANDI datasets show that our methods achieve state-of-the-art performance on DIR.
+        </p>
+
+         <div class="row align-items-center">
+            <div class="col justify-content-center text-center">
+                <img src="img/converge.gif" style="width:95%" alt="Banner">
+                <p><b>Video 1:</b> Evolution of the registration field accross PIRARE+ iterations with the corresponding warped images.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>The PIRATE and PIRATE+ Models</h2>
+        <hr>
+        <div class="row align-items-center">
+			<div class="col justify-content-center text-justify">
+                <img style="width:100%" src="img/PIRATE structure.jpg" >
+                <p style="text-align: justify;"><b>Figure 1:</b> Illustration of the PIRATE and PIRATE+ pipelines. PIRATE updates the registration field using the penalty function that measures the similarity between the warped image and the fixed image, as well as a pre-trained CNN denoiser used as a regularizer. The DEQ update in PIRATE+ enables to fine-tune the CNN by calculating the gradients using implicitly differentiation through the fixed point of the forward iteration. As described in this paper, the DEQ update of PIRATE+ is computed using the weighted loss consisting of similarity loss, smoothness loss, and Jacobian loss.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Validation on 3D Brain MRI Data</h2>
+        <hr>
+
+        <div class="row align-items-center">
+			<div class="col justify-content-center text-center">
+                <img src="img/sim_dice.jpg" style="width:85%" alt="Banner">
+                <p style="text-align: justify;"><b>Figure 2:</b> The visual results of warped images (top) and correlated warped segmentation masks (bottom) from PIRATE+ and selected benchmarks on the OASIS dataset. The regions of interest are highlighted within a red box. The DSC for each image is displayed in the bottom row. Note that the result of PIRATE+ is more consistent with the fixed image with fewer artifacts compared with other baselines.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="section">
+        <h2>Ablation Study</h2>
+        <hr>
+        <div class="row align-items-center">
+			<div class="col justify-content-center text-center">
+                <img src="img/ablation_jac.jpg" style="width:85%" alt="Banner">
+                <p style="text-align: justify;"><b>Figure 3:</b> The visual results for the warped grid (top) and negative JD (yellow points in bottom) of PIRATE+ and its five ablated variants on CANDI dataset. We denote <b>P</b> as the penalty function, <b>R</b> as the denoiser regularizer, <b>S</b> as the smoothness regularizer, and <b>D</b> as DEQ. PIRATE is formulated as <b>P+R+S</b>, and PIRATE+ is formulated as <b>P+D+S</b>. The gradient loss is shown in the top row, and the ratio of negative JD is shown in the bottom row. Note that PIRATE+'s architecture is optimal, since it significantly reduces the negative JD and provides smoother registration field.</p>
+            </div>
+        </div>
+
+    </div>
+    
+    <div class="section">
+        <h2>Paper</h2>
+        <hr>
+        <div>
+            <div class="list-group">
+                <a href="https://arxiv.org/abs/2310.04297"
+                   class="list-group-item">
+                    <img src="img/paper.jpg" style="width:100%; margin-right:-20px; margin-top:-10px;">
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="section">
+        <h2>Bibtex</h2>
+        <hr>
+        <div class="bibtexsection">
+            @article{hu2023plugandplay,
+              title={A Plug-and-Play Image Registration Network},
+              author={Hu, Junhao
+                and Gan, Weijie
+                and Sun, Zhixin 
+                and An, Hongyu 
+                and Kamilov, Ulugbek S.},
+              note={arXiv:2310.04297},
+              year={2023}
+            }
+        </div>
+    </div>
+
+    <hr>
+
+   <footer>
+       <p>Acknoledgement: Web template of <a href="https://www.vincentsitzmann.com/siren/">SIREN</a> and <a href="https://wustl-cig.github.io/curewww">CURE</a></p>
+   </footer>
+</div>
+</body>
+</html>
